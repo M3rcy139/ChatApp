@@ -24,7 +24,7 @@ public static class MiddlewareConfiguration
         app.UseHttpsRedirection();
         app.UseRouting();
 
-        //app.ConfigureCustomMiddleware();
+        app.ConfigureCustomMiddleware();
 
         app.UseAuthentication();
         app.UseAuthorization();

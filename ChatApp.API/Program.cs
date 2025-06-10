@@ -1,3 +1,4 @@
+using ChatApp.API.Hubs;
 using ChatApp.API.ServiceCollection;
 using Serilog;
 
@@ -22,9 +23,13 @@ try
     services.AddRepositories();
 
     services.AddAuthenticationConfiguration(configuration);
+    
+    services.AddSignalR();
 
     var app = builder.Build();
 
+    app.MapHub<ChatHub>("/chathub");
+    
     app.ConfigureMiddleware(builder.Environment);
     
     app.Run();
