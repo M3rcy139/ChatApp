@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp", "ChatApp\ChatApp.csproj", "{64B5412D-4D5D-406A-A09A-8EAF95033EB1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{25D2C1A9-60EF-4A07-87D4-3D01E752DFC5}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Domain", "ChatApp.Domain\ChatApp.Domain.csproj", "{F13C386E-1560-4D9C-B929-8411505D8688}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Business", "ChatApp.Business\ChatApp.Business.csproj", "{E540A01A-DAC7-42FE-9935-A44389B2338C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Migrations", "ChatApp.Migrations\ChatApp.Migrations.csproj", "{4093E08B-C859-462D-80BF-8BC5BF351C33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Infrastructure", "ChatApp.Infrastructure\ChatApp.Infrastructure.csproj", "{1990C611-95A5-4E15-94C7-ABE723E787B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Tests", "ChatApp.Tests\ChatApp.Tests.csproj", "{BF86F841-3BDE-4DFF-BDDA-3A8ECBAB29DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.DataAccess", "ChatApp.DataAccess\ChatApp.DataAccess.csproj", "{6170C09B-92FF-4C71-9145-4E941C10A602}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64B5412D-4D5D-406A-A09A-8EAF95033EB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64B5412D-4D5D-406A-A09A-8EAF95033EB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64B5412D-4D5D-406A-A09A-8EAF95033EB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64B5412D-4D5D-406A-A09A-8EAF95033EB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F13C386E-1560-4D9C-B929-8411505D8688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F13C386E-1560-4D9C-B929-8411505D8688}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F13C386E-1560-4D9C-B929-8411505D8688}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F13C386E-1560-4D9C-B929-8411505D8688}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E540A01A-DAC7-42FE-9935-A44389B2338C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E540A01A-DAC7-42FE-9935-A44389B2338C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E540A01A-DAC7-42FE-9935-A44389B2338C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E540A01A-DAC7-42FE-9935-A44389B2338C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4093E08B-C859-462D-80BF-8BC5BF351C33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4093E08B-C859-462D-80BF-8BC5BF351C33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4093E08B-C859-462D-80BF-8BC5BF351C33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4093E08B-C859-462D-80BF-8BC5BF351C33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1990C611-95A5-4E15-94C7-ABE723E787B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1990C611-95A5-4E15-94C7-ABE723E787B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1990C611-95A5-4E15-94C7-ABE723E787B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1990C611-95A5-4E15-94C7-ABE723E787B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF86F841-3BDE-4DFF-BDDA-3A8ECBAB29DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF86F841-3BDE-4DFF-BDDA-3A8ECBAB29DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF86F841-3BDE-4DFF-BDDA-3A8ECBAB29DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF86F841-3BDE-4DFF-BDDA-3A8ECBAB29DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6170C09B-92FF-4C71-9145-4E941C10A602}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6170C09B-92FF-4C71-9145-4E941C10A602}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6170C09B-92FF-4C71-9145-4E941C10A602}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6170C09B-92FF-4C71-9145-4E941C10A602}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
