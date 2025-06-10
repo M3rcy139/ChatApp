@@ -7,9 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="DTOs\" />
-      <Folder Include="Interfaces\" />
-      <Folder Include="Services\" />
+      <ProjectReference Include="..\ChatApp.DataAccess\ChatApp.DataAccess.csproj" />
+      <ProjectReference Include="..\ChatApp.Domain\ChatApp.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.0" />
     </ItemGroup>
 
 </Project>
