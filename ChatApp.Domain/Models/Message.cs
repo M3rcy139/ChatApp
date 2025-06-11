@@ -7,4 +7,5 @@ public class Message
     public Guid SenderId { get; set; }
     public string Text { get; set; } = default!;
     public DateTime SentAt { get; set; }
+    public DateTime EditedAt { get; set; }
 }

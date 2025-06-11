@@ -22,6 +22,8 @@ try
     services.AddServices();
     services.AddRepositories();
 
+    services.AddRedisConfiguration(configuration);
+    
     services.AddAuthenticationConfiguration(configuration);
     
     services.AddSignalR();

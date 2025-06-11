@@ -1,3 +1,4 @@
+using ChatApp.API.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
