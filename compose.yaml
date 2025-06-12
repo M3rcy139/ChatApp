@@ -1,0 +1,35 @@
+﻿version: '3.9'
+
+services:
+  chatapp:
+    image: chatapp
+    build:
+      context: .
+      dockerfile: ChatApp.API/Dockerfile
+    depends_on:
+      - redis
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Redis=redis:6379
+    ports:
+      - "5000:80"
+    networks:
+      - chatnet
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - chatnet
+    volumes:
+      - redis-data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+
+volumes:
+  redis-data:
+
+networks:
+  chatnet:
+    driver: bridge
