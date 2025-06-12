@@ -27,8 +27,7 @@ public class MessageCacheService : IMessageCacheService
         var tran = _redisDb.CreateTransaction();
         _ = tran.SortedSetAddAsync(setKey, messageId, score);
         _ = tran.HashSetAsync(hashKey, messageId, json);
-        _ = tran.KeyExpireAsync(setKey, _cacheTtl);
-        _ = tran.KeyExpireAsync(hashKey, _cacheTtl);
+        AddExpiryToTransaction(tran, setKey, hashKey);
         await tran.ExecuteAsync();
     }
 
@@ -48,8 +47,7 @@ public class MessageCacheService : IMessageCacheService
         var tran = _redisDb.CreateTransaction();
         _ = tran.SortedSetAddAsync(setKey, sortedSetEntries);
         _ = tran.HashSetAsync(hashKey, hashEntries);
-        _ = tran.KeyExpireAsync(setKey, _cacheTtl);
-        _ = tran.KeyExpireAsync(hashKey, _cacheTtl);
+        AddExpiryToTransaction(tran, setKey, hashKey);
         await tran.ExecuteAsync();
     }
 
@@ -98,6 +96,12 @@ public class MessageCacheService : IMessageCacheService
         await tran.ExecuteAsync();
     }
 
+    private void AddExpiryToTransaction(ITransaction tran, string setKey, string hashKey)
+    {
+        _ = tran.KeyExpireAsync(setKey, _cacheTtl);
+        _ = tran.KeyExpireAsync(hashKey, _cacheTtl);
+    }
+    
     private static string GetSortedSetKey(Guid chatId) => $"chat:messages:{chatId}:ids";
     private static string GetHashKey(Guid chatId) => $"chat:messages:{chatId}:data";
 }

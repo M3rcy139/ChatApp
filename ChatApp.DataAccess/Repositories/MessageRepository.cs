@@ -37,25 +37,19 @@ public class MessageRepository : IMessageRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteMessageAsync(Guid messageId)
+    public async Task DeleteMessageAsync(Message message)
     {
-        var message = await _context.Messages.FindAsync(messageId);
-        if (message != null)
-        {
-            _context.Messages.Remove(message);
-            await _context.SaveChangesAsync();
-        }
+        _context.Messages.Remove(message);
+        await _context.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<Message>> SearchMessagesAsync(Guid chatId, string query)
     {
-        var tsQuery = query + ":*"; 
-
         return await _context.Messages
             .Where(m => m.ChatId == chatId)
             .Where(m =>
                 EF.Functions.ToTsVector("russian", m.Text)
-                    .Matches(EF.Functions.PlainToTsQuery("russian", tsQuery)))
+                    .Matches(EF.Functions.PlainToTsQuery("russian", query)))
             .OrderByDescending(m => m.SentAt)
             .ToListAsync();
     }

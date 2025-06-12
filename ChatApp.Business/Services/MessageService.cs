@@ -1,7 +1,7 @@
-using ChatApp.Business.Interfaces;
 using ChatApp.Business.Interfaces.Cache;
 using ChatApp.Business.Interfaces.Services;
 using ChatApp.DataAccess.Interfaces;
+using ChatApp.Domain.Constants;
 using ChatApp.Domain.Models;
 
 namespace ChatApp.Business.Services;
@@ -48,14 +48,8 @@ public class MessageService : IMessageService
     
     public async Task<Message> EditMessageAsync(Guid chatId, Guid messageId, Guid userId, string newText)
     {
-        var message = await _messageRepository.GetMessageByIdAsync(messageId);
-
-        if (message == null || message.ChatId != chatId)
-            throw new Exception("Message not found in chat");
-
-        if (message.SenderId != userId)
-            throw new UnauthorizedAccessException("You can only edit your own messages");
-
+        var message = await GetAndValidateMessagesAsync(messageId, chatId, userId);
+        
         message.Text = newText;
         message.EditedAt = DateTime.UtcNow;
 
@@ -67,21 +61,29 @@ public class MessageService : IMessageService
 
     public async Task DeleteMessageAsync(Guid chatId, Guid messageId, Guid userId)
     {
-        var message = await _messageRepository.GetMessageByIdAsync(messageId);
+        var message = await GetAndValidateMessagesAsync(messageId, chatId, userId);
 
-        if (message == null || message.ChatId != chatId)
-            throw new Exception("Message not found in chat");
-
-        if (message.SenderId != userId)
-            throw new UnauthorizedAccessException("You can only delete your own messages");
-
-        await _messageRepository.DeleteMessageAsync(messageId);
+        await _messageRepository.DeleteMessageAsync(message);
         await _cacheService.DeleteMessageFromCacheAsync(chatId, messageId);
     }
     
     public async Task<IEnumerable<Message>> SearchMessagesAsync(Guid chatId, Guid userId, string query)
     {
-        return await _messageRepository.SearchMessagesAsync(chatId, query);
+        var tsQuery = query + ":*";
+        
+        return await _messageRepository.SearchMessagesAsync(chatId, tsQuery);
     }
 
+    private async Task<Message> GetAndValidateMessagesAsync(Guid messageId, Guid chatId, Guid userId)
+    {
+        var message = await _messageRepository.GetMessageByIdAsync(messageId);
+
+        if (message == null || message.ChatId != chatId)
+            throw new ArgumentException(ErrorMessages.MessageNotFound);
+
+        if (message.SenderId != userId)
+            throw new UnauthorizedAccessException(ErrorMessages.YouCanOnlyEditOwnMessages);
+        
+        return message;
+    }
 }

@@ -9,8 +9,7 @@ public class ChatHub : Hub
 {
     public override async Task OnConnectedAsync()
     {
-        var httpContext = Context.GetHttpContext();
-        var chatId = httpContext!.Request.Query["chatId"];
+        var chatId = Context.GetHttpContext()!.Request.Query["chatId"];
 
         if (!string.IsNullOrEmpty(chatId))
         {
@@ -22,8 +21,7 @@ public class ChatHub : Hub
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        var httpContext = Context.GetHttpContext();
-        var chatId = httpContext!.Request.Query["chatId"];
+        var chatId = Context.GetHttpContext()!.Request.Query["chatId"];
 
         if (!string.IsNullOrEmpty(chatId))
         {

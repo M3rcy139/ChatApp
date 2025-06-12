@@ -2,6 +2,8 @@ using ChatApp.Business.Interfaces;
 using ChatApp.Business.Interfaces.Cache;
 using ChatApp.Business.Interfaces.Services;
 using ChatApp.DataAccess.Interfaces;
+using ChatApp.Domain.Constants;
+using ChatApp.Domain.Extensions;
 using ChatApp.Domain.Models;
 
 namespace ChatApp.Business.Services;
@@ -29,16 +31,9 @@ public class ChatService : IChatService
         return chats;
     }
 
-    public async Task<Chat> CreateChatAsync(Guid creatorUserId, string chatName, IEnumerable<Guid> participantUserIds)
+    public async Task<Chat> CreateChatAsync(Guid creatorUserId, string chatName, List<Guid> participantUserIds)
     {
-        var users = new List<User>();
-        
-        foreach (var userId in participantUserIds.Append(creatorUserId).Distinct())
-        {
-            var user = await _userRepository.GetUserByIdAsync(userId);
-            if (user == null) throw new Exception($"User {userId} not found");
-            users.Add(user);
-        }
+        var users = await GetAndValidateUsersAsync(participantUserIds.Append(creatorUserId).Distinct().ToList());
 
         var chat = new Chat
         {
@@ -58,9 +53,24 @@ public class ChatService : IChatService
     
     public async Task EnsureUserIsParticipantAsync(Guid chatId, Guid userId)
     {
-        var chat = await _chatRepository.GetChatByIdAsync(chatId)!;
-        if (!chat.Users.Any(u => u.Id == userId))
-            throw new UnauthorizedAccessException("User is not a participant of this chat.");
+        var chat = await _chatRepository.GetChatByIdAsync(chatId);
+        chat.ValidateEntity(ErrorMessages.ChatNotFound);
+        
+        if (chat!.Users.All(u => u.Id != userId))
+            throw new UnauthorizedAccessException(ErrorMessages.NotParticipantOfChat);
     }
 
+    private async Task<List<User>> GetAndValidateUsersAsync(List<Guid> userIds)
+    {
+        var users = new List<User>(userIds.Count());
+    
+        foreach (var userId in userIds)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            user.ValidateEntity(ErrorMessages.UserNotFound);
+            users.Add(user!);
+        }
+    
+        return users;
+    }
 }

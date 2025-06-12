@@ -1,6 +1,9 @@
+using System.Security.Authentication;
 using ChatApp.Business.Interfaces.Authentication;
 using ChatApp.Business.Interfaces.Services;
 using ChatApp.DataAccess.Interfaces;
+using ChatApp.Domain.Constants;
+using ChatApp.Domain.Extensions;
 using ChatApp.Domain.Models;
 
 namespace ChatApp.Business.Services;
@@ -43,11 +46,7 @@ public class UserService : IUserService
         var user = await _usersRepository.GetByPhoneNumberAsync(phoneNumber);
 
         var result = _passwordHasher.Verify(password, user.PasswordHash);
-
-        if (result == false)
-        {
-            throw new Exception("Failed to login");
-        }
+        result.ThrowIfFalse(() => new AuthenticationException(ErrorMessages.FailedToLogin));
 
         var token = _jwtProvider.Generate(user);
 
@@ -57,11 +56,9 @@ public class UserService : IUserService
     private async Task UserExistsAsync(string userName, string phoneNumber)
     {
         var userNameExists = await _usersRepository.UserNameExistsAsync(userName);
-        if (userNameExists)
-            throw new InvalidOperationException("A user with the same username already exists.");
+        userNameExists.ThrowIfTrue(() => new InvalidOperationException(ErrorMessages.AlreadyExistsUserName));
         
         var phoneNumberExists = await _usersRepository.UserPhoneNumberExistsAsync(phoneNumber);
-        if (phoneNumberExists)
-            throw new InvalidOperationException("A user with the same phone number already exists.");
+        phoneNumberExists.ThrowIfTrue(() => new InvalidOperationException(ErrorMessages.AlreadyExistsPhoneNumber));
     }
 }

@@ -10,4 +10,9 @@ public static class InfoMessages
     public const string SentMessage = "Message with Id: {0} successfully sent.";
     public const string EditedMessage = "Message with Id: {0} was successfully edited.";
     public const string DeletedMessage = "Message was successfully deleted.";
+    
+    public const string CreatedChat = "Chat with Id: {0} was created successfully";
+    
+    public const string SuccessfulLogin = "Successfully logged in.";
+    public const string SuccessfulRegistration = "Successfully registered a user.";
 }
