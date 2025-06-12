@@ -6,6 +6,7 @@ using ChatApp.Domain.Models;
 using ChatApp.Tests.Arrange;
 using ChatApp.Tests.Configurations;
 using ChatApp.Tests.Mocks;
+using ChatApp.Tests.TestData;
 using Moq;
 using Xunit;
 
@@ -29,8 +30,8 @@ public class ChatServiceTests : IClassFixture<ChatServiceConfiguration>
         var participantIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
         var allUserIds = participantIds.Append(creatorId).Distinct().ToList();
 
-        var users = UserServiceTestData.CreateUsers(allUserIds);
-        var createdChat = ChatServiceTestData.CreateChat(users);
+        var users = UserTestData.CreateUsers(allUserIds);
+        var createdChat = ChatTestData.CreateChat(users);
 
         foreach (var user in users)
         {
@@ -40,7 +41,7 @@ public class ChatServiceTests : IClassFixture<ChatServiceConfiguration>
         ChatServiceMocks.SetupCreateChat(_configuration.ChatRepoMock, createdChat);
 
         // Act
-        var result = await _configuration.Service.CreateChatAsync(creatorId, ChatServiceTestData.ChatName, participantIds);
+        var result = await _configuration.Service.CreateChatAsync(creatorId, ChatTestData.ChatName, participantIds);
 
         // Assert
         Assert.Equal(createdChat, result);
@@ -65,7 +66,7 @@ public class ChatServiceTests : IClassFixture<ChatServiceConfiguration>
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
-            _configuration.Service.CreateChatAsync(creatorId, ChatServiceTestData.ChatName, participantIds));
+            _configuration.Service.CreateChatAsync(creatorId, ChatTestData.ChatName, participantIds));
 
         Assert.Equal(ErrorMessages.UserNotFound, exception.Message);
         
@@ -79,7 +80,7 @@ public class ChatServiceTests : IClassFixture<ChatServiceConfiguration>
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var cachedChats = ChatServiceTestData.CreateChats();
+        var cachedChats = ChatTestData.CreateChats();
 
         ChatServiceMocks.SetupGetCachedUserChats(_configuration.ChatCacheMock, userId, cachedChats);
 
@@ -96,7 +97,7 @@ public class ChatServiceTests : IClassFixture<ChatServiceConfiguration>
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var repoChats = ChatServiceTestData.CreateChats();
+        var repoChats = ChatTestData.CreateChats();
 
         ChatServiceMocks.SetupGetCachedUserChats(_configuration.ChatCacheMock, userId, null);
 
@@ -132,7 +133,7 @@ public class ChatServiceTests : IClassFixture<ChatServiceConfiguration>
         var chatId = Guid.NewGuid();
         var userId = Guid.NewGuid();
 
-        var chat = ChatServiceTestData.CreateChat(new List<User> { new() { Id = Guid.NewGuid() } });
+        var chat = ChatTestData.CreateChat(new List<User> { new() { Id = Guid.NewGuid() } });
 
         ChatServiceMocks.SetupGetChatById(_configuration.ChatRepoMock, chatId, chat);
 
@@ -150,7 +151,7 @@ public class ChatServiceTests : IClassFixture<ChatServiceConfiguration>
         var chatId = Guid.NewGuid();
         var userId = Guid.NewGuid();
 
-        var chat = ChatServiceTestData.CreateChat(new List<User> { new() { Id = userId } });
+        var chat = ChatTestData.CreateChat(new List<User> { new() { Id = userId } });
 
         ChatServiceMocks.SetupGetChatById(_configuration.ChatRepoMock, chatId, chat);
 

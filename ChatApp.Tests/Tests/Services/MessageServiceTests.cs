@@ -5,6 +5,7 @@ using Moq;
 using Xunit;
 using ChatApp.Tests.Configurations;
 using ChatApp.Tests.Mocks;
+using ChatApp.Tests.TestData;
 
 namespace ChatApp.Tests.Tests.Services;
 
@@ -22,7 +23,7 @@ public class MessageServiceTests : IClassFixture<MessageServiceConfiguration>
     public async Task SendMessageAsync_ShouldSaveAndCacheMessage()
     {
         // Arrange
-        var message = MessageServiceTestData.CreateMessage();
+        var message = MessageTestData.CreateMessage();
         
         MessageServiceMocks.SetupAddMessage(_configuration.MessageRepositoryMock);
 
@@ -40,7 +41,7 @@ public class MessageServiceTests : IClassFixture<MessageServiceConfiguration>
     {
         // Arrange
         var chatId = Guid.NewGuid();
-        var cachedMessages = MessageServiceTestData.CreateCahedMessages(10);
+        var cachedMessages = MessageTestData.CreateCahedMessages(10);
 
         MessageServiceMocks.SetupGetCachedMessages(_configuration.MessageCacheMock, chatId, 1, 10, cachedMessages);
 
@@ -57,7 +58,7 @@ public class MessageServiceTests : IClassFixture<MessageServiceConfiguration>
     {
         // Arrange
         var chatId = Guid.NewGuid();
-        var dbMessages = MessageServiceTestData.CreateMessages();
+        var dbMessages = MessageTestData.CreateMessages();
 
         MessageServiceMocks.SetupGetCachedMessages(_configuration.MessageCacheMock, chatId, 1, 10, new List<Message>());
         MessageServiceMocks.SetupGetMessagesFromDb(_configuration.MessageRepositoryMock, chatId, 1, 10, dbMessages);
@@ -74,7 +75,7 @@ public class MessageServiceTests : IClassFixture<MessageServiceConfiguration>
     public async Task EditMessageAsync_ShouldUpdateTextAndCache()
     {
         // Arrange
-        var message = MessageServiceTestData.CreateMessage();
+        var message = MessageTestData.CreateMessage();
 
         MessageServiceMocks.SetupGetMessageById(_configuration.MessageRepositoryMock, message.Id, message);
 
@@ -107,7 +108,7 @@ public class MessageServiceTests : IClassFixture<MessageServiceConfiguration>
     public async Task EditMessageAsync_Throws_IfNotOwner()
     {
         // Arrange
-        var message = MessageServiceTestData.CreateMessage();
+        var message = MessageTestData.CreateMessage();
         var anotherUser = Guid.NewGuid();
 
         MessageServiceMocks.SetupGetMessageById(_configuration.MessageRepositoryMock, message.Id, message);
@@ -123,7 +124,7 @@ public class MessageServiceTests : IClassFixture<MessageServiceConfiguration>
     public async Task DeleteMessageAsync_ShouldDeleteAndEvictCache()
     {
         // Arrange
-        var message = MessageServiceTestData.CreateMessage();
+        var message = MessageTestData.CreateMessage();
 
         MessageServiceMocks.SetupGetMessageById(_configuration.MessageRepositoryMock, message.Id, message);
 
@@ -139,7 +140,7 @@ public class MessageServiceTests : IClassFixture<MessageServiceConfiguration>
     public async Task DeleteMessageAsync_Throws_IfNotOwner()
     {
         // Arrange
-        var message = MessageServiceTestData.CreateMessage();
+        var message = MessageTestData.CreateMessage();
 
         var anotherUser = Guid.NewGuid();
 
@@ -156,7 +157,7 @@ public class MessageServiceTests : IClassFixture<MessageServiceConfiguration>
     public async Task DeleteMessageAsync_Throws_IfMessageNotFound()
     {
         // Arrange
-        var message = MessageServiceTestData.CreateMessage();
+        var message = MessageTestData.CreateMessage();
 
         MessageServiceMocks.SetupGetMessageByIdThrows(_configuration.MessageRepositoryMock, message.Id);
         _configuration.MessageRepositoryMock.Setup(r => r.GetMessageByIdAsync(Guid.NewGuid()))
@@ -172,9 +173,9 @@ public class MessageServiceTests : IClassFixture<MessageServiceConfiguration>
         // Arrange
         var chatId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var query = MessageServiceTestData.SearchQuery;
-        var tsQuery = MessageServiceTestData.TsSearchQuery;
-        var expected = MessageServiceTestData.CreateMessages(MessageServiceTestData.SearchMessage);
+        var query = MessageTestData.SearchQuery;
+        var tsQuery = MessageTestData.TsSearchQuery;
+        var expected = MessageTestData.CreateMessages(MessageTestData.SearchMessage);
 
         MessageServiceMocks.SetupSearchMessages(_configuration.MessageRepositoryMock, chatId, tsQuery, expected);
 
@@ -183,6 +184,6 @@ public class MessageServiceTests : IClassFixture<MessageServiceConfiguration>
 
         // Assert
         Assert.Single(result);
-        Assert.Contains(MessageServiceTestData.SearchQuery, result.First().Text);
+        Assert.Contains(MessageTestData.SearchQuery, result.First().Text);
     }
 }

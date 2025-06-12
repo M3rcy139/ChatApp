@@ -25,41 +25,14 @@ public class MessageServiceMocks
         repoMock.Setup(r => r.GetMessagesByChatIdAsync(chatId, page, pageSize))
                 .ReturnsAsync(result);
     }
-
-    public static void SetupCacheMessages(Mock<IMessageCacheService> cacheMock, Guid chatId, List<Message> messages)
-    {
-        cacheMock.Setup(c => c.CacheMessagesAsync(chatId, messages));
-    }
+    
 
     public static void SetupGetMessageById(Mock<IMessageRepository> repoMock, Guid messageId, Message? result)
     {
         repoMock.Setup(r => r.GetMessageByIdAsync(messageId))
                 .ReturnsAsync(result);
     }
-
-    public static void SetupUpdateMessage(Mock<IMessageRepository> repoMock)
-    {
-        repoMock.Setup(r => r.UpdateMessageAsync(It.IsAny<Message>()))
-                .Returns(Task.CompletedTask);
-    }
-
-    public static void SetupCacheMessage(Mock<IMessageCacheService> cacheMock)
-    {
-        cacheMock.Setup(c => c.CacheMessageAsync(It.IsAny<Message>()))
-                 .Returns(Task.CompletedTask);
-    }
-
-    public static void SetupDeleteMessage(Mock<IMessageRepository> repoMock)
-    {
-        repoMock.Setup(r => r.DeleteMessageAsync(It.IsAny<Message>()))
-                .Returns(Task.CompletedTask);
-    }
-
-    public static void SetupDeleteMessageFromCache(Mock<IMessageCacheService> cacheMock)
-    {
-        cacheMock.Setup(c => c.DeleteMessageFromCacheAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                 .Returns(Task.CompletedTask);
-    }
+    
 
     public static void SetupGetMessageByIdThrows(Mock<IMessageRepository> repoMock, Guid messageId)
     {

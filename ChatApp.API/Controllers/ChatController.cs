@@ -21,6 +21,13 @@ public class ChatController : ControllerBase
         _chatService = chatService;
     }
 
+    [HttpPost]
+    public async Task<IActionResult> CreateChat([FromBody] CreateChatRequest request)
+    {
+        var chat = await _chatService.CreateChatAsync(CurrentUserId, request.Name, request.ParticipantUserIds);
+        return Ok(new {message = string.Format(InfoMessages.CreatedChat, chat.Id)});
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetChats()
     {
@@ -33,12 +40,5 @@ public class ChatController : ControllerBase
         }).ToList();
 
         return Ok(chatDtos);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateChat([FromBody] CreateChatRequest request)
-    {
-        var chat = await _chatService.CreateChatAsync(CurrentUserId, request.Name, request.ParticipantUserIds);
-        return Ok(new {message = string.Format(InfoMessages.CreatedChat, chat.Id)});
     }
 }

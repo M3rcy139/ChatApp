@@ -7,6 +7,7 @@ using ChatApp.Domain.Models;
 using ChatApp.Tests.Arrange;
 using ChatApp.Tests.Configurations;
 using ChatApp.Tests.Mocks;
+using ChatApp.Tests.TestData;
 using Moq;
 using Xunit;
 
@@ -26,10 +27,10 @@ public class UserServiceTests : IClassFixture<UserServiceConfiguration>
     public async Task Register_ShouldAddNewUser_WhenUserDoesNotExist()
     {
         // Arrange
-        var username = UserServiceTestData.ValidUsername;
-        var phone = UserServiceTestData.ValidPhone;
-        var password = UserServiceTestData.ValidPassword;
-        var hashedPassword = UserServiceTestData.HashedPassword;
+        var username = UserTestData.ValidUsername;
+        var phone = UserTestData.ValidPhone;
+        var password = UserTestData.ValidPassword;
+        var hashedPassword = UserTestData.HashedPassword;
 
         UserServiceMocks.SetupUserNameExists(_configuration.UserRepoMock, username, false);
         UserServiceMocks.SetupUserPhoneExists(_configuration.UserRepoMock, phone, false);
@@ -50,13 +51,13 @@ public class UserServiceTests : IClassFixture<UserServiceConfiguration>
     public async Task Register_ShouldThrow_WhenUserNameAlreadyExists()
     {
         // Arrange
-        var username = UserServiceTestData.DuplicateUsername;
+        var username = UserTestData.DuplicateUsername;
         
         UserServiceMocks.SetupUserNameExists(_configuration.UserRepoMock, username, true);
 
         // Act & Assert
         var ex = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            _configuration.Service.Register(username, UserServiceTestData.ValidPhone, UserServiceTestData.ValidPassword));
+            _configuration.Service.Register(username, UserTestData.ValidPhone, UserTestData.ValidPassword));
 
         Assert.Equal(ErrorMessages.AlreadyExistsUserName, ex.Message);
     }
@@ -65,15 +66,15 @@ public class UserServiceTests : IClassFixture<UserServiceConfiguration>
     public async Task Register_ShouldThrow_WhenPhoneNumberAlreadyExists()
     {
         // Arrange
-        var username = UserServiceTestData.ValidUsername;
-        var phone = UserServiceTestData.DuplicatePhone;
+        var username = UserTestData.ValidUsername;
+        var phone = UserTestData.DuplicatePhone;
 
         UserServiceMocks.SetupUserNameExists(_configuration.UserRepoMock, username, false);
         UserServiceMocks.SetupUserPhoneExists(_configuration.UserRepoMock, phone, true);
 
         // Act & Assert
         var ex = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            _configuration.Service.Register(username, phone, UserServiceTestData.ValidPassword));
+            _configuration.Service.Register(username, phone, UserTestData.ValidPassword));
 
         Assert.Equal(ErrorMessages.AlreadyExistsPhoneNumber, ex.Message);
     }
@@ -82,39 +83,39 @@ public class UserServiceTests : IClassFixture<UserServiceConfiguration>
     public async Task Login_ShouldReturnToken_WhenCredentialsAreValid()
     {
         // Arrange
-        var phone = UserServiceTestData.ValidPhone;
-        var password = UserServiceTestData.ValidPassword;
-        var hashed = UserServiceTestData.HashedPassword;
+        var phone = UserTestData.ValidPhone;
+        var password = UserTestData.ValidPassword;
+        var hashed = UserTestData.HashedPassword;
 
-        var user = UserServiceTestData.CreateUser();
+        var user = UserTestData.CreateUser();
 
         UserServiceMocks.SetupGetUserByPhone(_configuration.UserRepoMock, phone, user);
         UserServiceMocks.SetupPasswordVerify(_configuration.PasswordHasherMock, password, hashed, true);
-        UserServiceMocks.SetupGenerateToken(_configuration.JwtProviderMock, user, UserServiceTestData.JwtToken);
+        UserServiceMocks.SetupGenerateToken(_configuration.JwtProviderMock, user, UserTestData.JwtToken);
 
         // Act
         var token = await _configuration.Service.Login(phone, password);
 
         // Assert
-        Assert.Equal(UserServiceTestData.JwtToken, token);
+        Assert.Equal(UserTestData.JwtToken, token);
     }
 
     [Fact]
     public async Task Login_ShouldThrow_WhenPasswordInvalid()
     {
         // Arrange
-        var phone = UserServiceTestData.ValidPhone;
-        var hashed = UserServiceTestData.HashedPassword;
+        var phone = UserTestData.ValidPhone;
+        var hashed = UserTestData.HashedPassword;
 
-        var user = UserServiceTestData.CreateUser();
+        var user = UserTestData.CreateUser();
 
         UserServiceMocks.SetupGetUserByPhone(_configuration.UserRepoMock, phone, user);
-        UserServiceMocks.SetupPasswordVerify(_configuration.PasswordHasherMock, UserServiceTestData.WrongPassword, 
+        UserServiceMocks.SetupPasswordVerify(_configuration.PasswordHasherMock, UserTestData.WrongPassword, 
             hashed, false);
 
         // Act & Assert
         var ex = await Assert.ThrowsAsync<AuthenticationException>(() =>
-            _configuration.Service.Login(phone, UserServiceTestData.WrongPassword));
+            _configuration.Service.Login(phone, UserTestData.WrongPassword));
 
         Assert.Equal(ErrorMessages.FailedToLogin, ex.Message);
     }
@@ -123,12 +124,12 @@ public class UserServiceTests : IClassFixture<UserServiceConfiguration>
     public async Task Login_ShouldThrow_WhenUserNotFound()
     {
         // Arrange
-        var phone = UserServiceTestData.UnknownPhone;
+        var phone = UserTestData.UnknownPhone;
 
         UserServiceMocks.SetupGetUserByPhone(_configuration.UserRepoMock, phone, null);
 
         // Act & Assert
         await Assert.ThrowsAsync<NullReferenceException>(() =>
-            _configuration.Service.Login(phone, UserServiceTestData.ValidPassword));
+            _configuration.Service.Login(phone, UserTestData.ValidPassword));
     }
 }

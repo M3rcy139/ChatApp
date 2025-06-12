@@ -1,11 +1,12 @@
 using ChatApp.Domain.Models;
 
-namespace ChatApp.Tests.Arrange;
+namespace ChatApp.Tests.TestData;
 
-public static class UserServiceTestData
+public static class UserTestData
 {
     public const string ValidUsername = "testuser";
     public const string DuplicateUsername = "duplicateUser";
+    public const string UnknownUsername = "unknownUser";
 
     public const string ValidPhone = "1234567890";
     public const string DuplicatePhone = "duplicatedPhone";

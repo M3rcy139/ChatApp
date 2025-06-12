@@ -19,12 +19,6 @@ public class ChatServiceMocks
             .ReturnsAsync(createdChat);
     }
 
-    public static void SetupInvalidateUserChatsCache(Mock<IChatCacheService> cacheMock, Guid userId)
-    {
-        cacheMock.Setup(c => c.InvalidateUserChatsCacheAsync(userId))
-            .Returns(Task.CompletedTask);
-    }
-
     public static void SetupGetCachedUserChats(Mock<IChatCacheService> cacheMock, Guid userId, IEnumerable<Chat>? cachedChats)
     {
         cacheMock.Setup(c => c.GetCachedUserChatsAsync(userId))
@@ -35,12 +29,6 @@ public class ChatServiceMocks
     {
         chatRepoMock.Setup(r => r.GetChatsByUserIdAsync(userId))
             .ReturnsAsync(chats);
-    }
-
-    public static void SetupCacheUserChats(Mock<IChatCacheService> cacheMock, Guid userId, IEnumerable<Chat> chats)
-    {
-        cacheMock.Setup(c => c.CacheUserChatsAsync(userId, chats))
-            .Returns(Task.CompletedTask);
     }
 
     public static void SetupGetChatById(Mock<IChatRepository> chatRepoMock, Guid chatId, Chat? chat)

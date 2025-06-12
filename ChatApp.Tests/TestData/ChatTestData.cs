@@ -1,8 +1,8 @@
 using ChatApp.Domain.Models;
 
-namespace ChatApp.Tests.Arrange;
+namespace ChatApp.Tests.TestData;
 
-public static class ChatServiceTestData
+public static class ChatTestData
 {
     public const string ChatName = "Test Chat";
     
