@@ -20,17 +20,6 @@ public class ChatService : IChatService
         _cacheService = cacheService;
     }
 
-    public async Task<IEnumerable<Chat>> GetUserChatsAsync(Guid userId)
-    {
-        var cached = await _cacheService.GetCachedUserChatsAsync(userId);
-        if (cached != null)
-            return cached;
-
-        var chats = await _chatRepository.GetChatsByUserIdAsync(userId);
-        await _cacheService.CacheUserChatsAsync(userId, chats);
-        return chats;
-    }
-
     public async Task<Chat> CreateChatAsync(Guid creatorUserId, string chatName, List<Guid> participantUserIds)
     {
         var users = await GetAndValidateUsersAsync(participantUserIds.Append(creatorUserId).Distinct().ToList());
@@ -50,7 +39,18 @@ public class ChatService : IChatService
 
         return created;
     }
-    
+
+    public async Task<IEnumerable<Chat>> GetUserChatsAsync(Guid userId)
+    {
+        var cached = await _cacheService.GetCachedUserChatsAsync(userId);
+        if (cached != null)
+            return cached;
+
+        var chats = await _chatRepository.GetChatsByUserIdAsync(userId);
+        await _cacheService.CacheUserChatsAsync(userId, chats);
+        return chats;
+    }
+
     public async Task EnsureUserIsParticipantAsync(Guid chatId, Guid userId)
     {
         var chat = await _chatRepository.GetChatByIdAsync(chatId);

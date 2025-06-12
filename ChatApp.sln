@@ -15,9 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Migrations", "ChatA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Infrastructure", "ChatApp.Infrastructure\ChatApp.Infrastructure.csproj", "{1990C611-95A5-4E15-94C7-ABE723E787B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Tests", "ChatApp.Tests\ChatApp.Tests.csproj", "{BF86F841-3BDE-4DFF-BDDA-3A8ECBAB29DE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.DataAccess", "ChatApp.DataAccess\ChatApp.DataAccess.csproj", "{6170C09B-92FF-4C71-9145-4E941C10A602}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Tests", "ChatApp.Tests\ChatApp.Tests.csproj", "{DFC77DF9-9F07-442E-9ECA-15BB0C1E3681}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,13 +45,13 @@ Global
 		{1990C611-95A5-4E15-94C7-ABE723E787B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1990C611-95A5-4E15-94C7-ABE723E787B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1990C611-95A5-4E15-94C7-ABE723E787B1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF86F841-3BDE-4DFF-BDDA-3A8ECBAB29DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF86F841-3BDE-4DFF-BDDA-3A8ECBAB29DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF86F841-3BDE-4DFF-BDDA-3A8ECBAB29DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF86F841-3BDE-4DFF-BDDA-3A8ECBAB29DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6170C09B-92FF-4C71-9145-4E941C10A602}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6170C09B-92FF-4C71-9145-4E941C10A602}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6170C09B-92FF-4C71-9145-4E941C10A602}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6170C09B-92FF-4C71-9145-4E941C10A602}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFC77DF9-9F07-442E-9ECA-15BB0C1E3681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFC77DF9-9F07-442E-9ECA-15BB0C1E3681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFC77DF9-9F07-442E-9ECA-15BB0C1E3681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFC77DF9-9F07-442E-9ECA-15BB0C1E3681}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

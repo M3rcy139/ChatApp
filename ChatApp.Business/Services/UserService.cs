@@ -43,7 +43,7 @@ public class UserService : IUserService
 
     public async Task<string> Login(string phoneNumber, string password)
     {
-        var user = await _usersRepository.GetByPhoneNumberAsync(phoneNumber);
+        var user = await _usersRepository.GetUserByPhoneNumberAsync(phoneNumber);
 
         var result = _passwordHasher.Verify(password, user.PasswordHash);
         result.ThrowIfFalse(() => new AuthenticationException(ErrorMessages.FailedToLogin));

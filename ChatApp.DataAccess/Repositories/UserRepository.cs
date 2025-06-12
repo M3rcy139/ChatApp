@@ -15,7 +15,7 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<User?> GetByPhoneNumberAsync(string phoneNumber)
+    public async Task<User?> GetUserByPhoneNumberAsync(string phoneNumber)
     {
         var user = await _context.Users
             .AsNoTracking()

@@ -1,5 +1,6 @@
 using ChatApp.Business.DTOs.Requests;
 using ChatApp.Business.Interfaces.Services;
+using ChatApp.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChatApp.API.Controllers;
@@ -20,7 +21,7 @@ public class UserController : ControllerBase
     {
         await _userService.Register(request.UserName, request.PhoneNumber, request.Password);
 
-        return Ok();
+        return Ok(new {message = string.Format(InfoMessages.SuccessfulRegistration)});
     }
 
     [HttpPost("login")]
@@ -30,6 +31,6 @@ public class UserController : ControllerBase
         
         Response.Cookies.Append("token", token);
         
-        return Ok();
+        return Ok(new {message = string.Format(InfoMessages.SuccessfulLogin)});
     }
 }
