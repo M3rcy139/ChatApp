@@ -1,10 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
-using ChatApp.Business.DTOs.Requests;
 using ChatApp.Business.Interfaces.Services;
 using ChatApp.Domain.Constants;
-using ChatApp.Tests.Configurations;
 using ChatApp.Tests.TestData;
+using ChatApp.Tests.WebApplicationFactories;
 using FluentAssertions;
 using Moq;
 using Xunit;

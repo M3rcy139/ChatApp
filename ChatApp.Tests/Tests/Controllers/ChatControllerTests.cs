@@ -1,31 +1,26 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Security.Claims;
-using ChatApp.API;
 using ChatApp.Business.DTOs.Requests;
 using ChatApp.Business.DTOs.Responses;
 using ChatApp.Business.Interfaces.Services;
 using ChatApp.Domain.Constants;
-using ChatApp.Domain.Models;
-using ChatApp.Tests.Configurations;
 using ChatApp.Tests.Mocks;
 using ChatApp.Tests.TestData;
+using ChatApp.Tests.WebApplicationFactories;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Moq;
 using Newtonsoft.Json;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace ChatApp.Tests.Tests.Controllers;
 
-public class ChatControllerTests : IClassFixture<WebApplicationFactoryWithMocks>
+public class ChatControllerTests : IClassFixture<ChatControllerWebApplicationFactory>
 {
     private readonly HttpClient _client;
-    private readonly WebApplicationFactoryWithMocks _factory;
+    private readonly ChatControllerWebApplicationFactory _factory;
     private readonly Mock<IChatService> _chatServiceMock;
 
-    public ChatControllerTests(WebApplicationFactoryWithMocks factory)
+    public ChatControllerTests(ChatControllerWebApplicationFactory factory)
     {
         _factory = factory;
         _client = factory.CreateClient();
