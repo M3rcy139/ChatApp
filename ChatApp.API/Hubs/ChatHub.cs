@@ -1,17 +1,33 @@
+using ChatApp.API.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ChatApp.API.Hubs;
 
+[Authorize]
 public class ChatHub : Hub
 {
-    public async Task JoinChat(string chatId)
+    public override async Task OnConnectedAsync()
     {
-        await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
+        var chatId = Context.GetHttpContext()!.Request.Query["chatId"];
+
+        if (!string.IsNullOrEmpty(chatId))
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
+        }
+
+        await base.OnConnectedAsync();
     }
 
-    public async Task SendMessage(string chatId, string message)
+    public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        var userId = Context.UserIdentifier;
-        await Clients.Group(chatId).SendAsync("ReceiveMessage", userId, message);
+        var chatId = Context.GetHttpContext()!.Request.Query["chatId"];
+
+        if (!string.IsNullOrEmpty(chatId))
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatId);
+        }
+
+        await base.OnDisconnectedAsync(exception);
     }
 }

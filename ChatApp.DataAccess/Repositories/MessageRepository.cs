@@ -25,4 +25,32 @@ public class MessageRepository : IMessageRepository
             .Take(pageSize)
             .ToListAsync();
     }
+    
+    public async Task<Message?> GetMessageByIdAsync(Guid messageId)
+    {
+        return await _context.Messages.FindAsync(messageId);
+    }
+
+    public async Task UpdateMessageAsync(Message message)
+    {
+        _context.Messages.Update(message);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteMessageAsync(Message message)
+    {
+        _context.Messages.Remove(message);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<Message>> SearchMessagesAsync(Guid chatId, string query)
+    {
+        return await _context.Messages
+            .Where(m => m.ChatId == chatId)
+            .Where(m =>
+                EF.Functions.ToTsVector("russian", m.Text)
+                    .Matches(EF.Functions.PlainToTsQuery("russian", query)))
+            .OrderByDescending(m => m.SentAt)
+            .ToListAsync();
+    }
 }
