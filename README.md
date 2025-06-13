@@ -15,9 +15,10 @@
 
   `http://localhost:8080`
 
-2. Зайти под логином/паролем: admin@admin.com / admin (переменные можно менять в docker-compose:
+2. Зайти под логином/паролем: admin@admin.com / admin (переменные можно менять в docker-compose):
 
-  `pgadmin:
+  ```
+pgadmin:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
@@ -27,18 +28,23 @@
     depends_on:
       - postgres
     networks:
-      - chatnet`
+      - chatnet
+```
 
 3. Добавить сервер:
 
 Host: postgres (это имя сервиса в сети Docker)
+
 User: postgres
+
 Password: 1234
+
 DB: chatapp_test
 
 Переменные взяты из:
 
-  `chatapp:
+  ```
+  chatapp:
     image: chatapp
     build:
       context: .
@@ -54,6 +60,7 @@ DB: chatapp_test
     ports:
       - "5000:80"
     networks:
-      - chatnet`
+      - chatnet
+```
 
     
