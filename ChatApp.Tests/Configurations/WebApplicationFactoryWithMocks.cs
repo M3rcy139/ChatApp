@@ -1,7 +1,9 @@
 using ChatApp.Business.Interfaces.Services;
+using ChatApp.DataAccess;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
@@ -35,6 +37,18 @@ public class WebApplicationFactoryWithMocks : WebApplicationFactory<Program>
                 d => d.ServiceType == typeof(Microsoft.AspNetCore.Authentication.IAuthenticationService));
             if (authDescriptor != null)
                 services.Remove(authDescriptor);
+            
+            services.AddDbContext<ChatAppDbContext>(options =>
+            {
+                options.UseNpgsql("Host=postgres;User ID=postgres;Password=1234;Port=5432;Database=chatapp_test");
+            });
+            
+            var chatServiceDescriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(IChatService));
+            if (chatServiceDescriptor != null)
+            {
+                services.Remove(chatServiceDescriptor);
+            }
             
             services.AddSingleton(ChatServiceMock.Object);
             
