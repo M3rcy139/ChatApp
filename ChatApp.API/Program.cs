@@ -32,7 +32,12 @@ try
 
     var app = builder.Build();
     
-    await app.MigrateDataBaseAsync();
+    
+    var env = app.Services.GetRequiredService<IWebHostEnvironment>();
+    if (!env.IsEnvironment("Testing"))
+    {
+        await app.MigrateDataBaseAsync();
+    }
 
     app.MapHub<ChatHub>("/chathub");
     
