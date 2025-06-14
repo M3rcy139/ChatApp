@@ -1,8 +1,7 @@
-using ChatApp.API.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
-namespace ChatApp.API.Hubs;
+namespace ChatApp.Business.Hubs;
 
 [Authorize]
 public class ChatHub : Hub

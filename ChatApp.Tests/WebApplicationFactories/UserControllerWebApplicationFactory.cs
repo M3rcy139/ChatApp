@@ -13,8 +13,7 @@ public class UserControllerWebApplicationFactory : BaseWebApplicationFactory<Pro
         var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IUserService));
         if (descriptor != null)
             services.Remove(descriptor);
-
-        UserServiceMock = new Mock<IUserService>();
+        
         services.AddSingleton(UserServiceMock.Object);
     }
 }

@@ -15,5 +15,8 @@ public static class ServiceConfiguration
         
         services.AddScoped<IMessageCacheService, MessageCacheService>();
         services.AddScoped<IChatCacheService, ChatCacheService>();
+        
+        services.AddScoped<IChatNotificationService, ChatNotificationService>();
+
     }
 }

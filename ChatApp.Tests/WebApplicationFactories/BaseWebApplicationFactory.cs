@@ -21,7 +21,7 @@ public abstract class BaseWebApplicationFactory<TProgram> : WebApplicationFactor
             
             services.AddDbContext<ChatAppDbContext>(options =>
             {
-                options.UseInMemoryDatabase("TestDb");
+                options.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString());
             });
 
             ConfigureMocks(services);

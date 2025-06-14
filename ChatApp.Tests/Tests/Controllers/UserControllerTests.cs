@@ -75,9 +75,4 @@ public class UserControllerTests : IClassFixture<UserControllerWebApplicationFac
         _userServiceMock.Verify(s =>
             s.Login(request.PhoneNumber, request.Password), Times.Once);
     }
-
-    private class AnonymousMessage
-    {
-        public string message { get; set; } = null!;
-    }
 }

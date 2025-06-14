@@ -1,7 +1,5 @@
-using ChatApp.API.Hubs;
+using ChatApp.Business.Hubs;
 using ChatApp.API.ServiceCollection;
-using ChatApp.DataAccess;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
