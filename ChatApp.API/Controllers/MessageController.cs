@@ -1,13 +1,10 @@
 using System.Security.Claims;
-using ChatApp.API.Contracts;
 using ChatApp.API.Filters;
-using ChatApp.API.Hubs;
 using ChatApp.Business.DTOs.Requests;
 using ChatApp.Business.Interfaces.Services;
 using ChatApp.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace ChatApp.API.Controllers;
 
@@ -18,14 +15,14 @@ namespace ChatApp.API.Controllers;
 public class MessageController : ControllerBase
 {
     private readonly IMessageService _messageService;
-    private readonly IHubContext<ChatHub> _hubContext;
+    private readonly IChatNotificationService _chatNotificationService;
     
     private Guid CurrentUserId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-    public MessageController(IMessageService messageService, IHubContext<ChatHub> hubContext)
+    public MessageController(IMessageService messageService, IChatNotificationService chatNotificationService)
     {
         _messageService = messageService;
-        _hubContext = hubContext;
+        _chatNotificationService = chatNotificationService;
     }
 
     [HttpPost]
@@ -33,13 +30,7 @@ public class MessageController : ControllerBase
     {
         var message = await _messageService.SendMessageAsync(chatId, CurrentUserId, request.Text);
         
-        await _hubContext.Clients.Group(chatId.ToString()).SendAsync(SignalRMethods.ReceiveMessage, new
-        {
-            ChatId = chatId,
-            UserId = CurrentUserId,
-            Text = message.Text,
-            SentAt = message.SentAt
-        });
+        await _chatNotificationService.NotifyMessageSentAsync(chatId, CurrentUserId, message.Text, message.SentAt);
         
         return Ok(new {message = string.Format(InfoMessages.SentMessage, message.Id)});
     }
@@ -56,13 +47,7 @@ public class MessageController : ControllerBase
     {
         var updatedMessage = await _messageService.EditMessageAsync(chatId, messageId, CurrentUserId, request.Text);
 
-        await _hubContext.Clients.Group(chatId.ToString()).SendAsync(SignalRMethods.MessageEdited, new
-        {
-            ChatId = chatId,
-            MessageId = messageId,
-            NewText = updatedMessage.Text,
-            EditedAt = updatedMessage.EditedAt
-        });
+        await _chatNotificationService.NotifyMessageEditedAsync(chatId, messageId, updatedMessage.Text, updatedMessage.EditedAt);
 
         return Ok(new {message = string.Format(InfoMessages.EditedMessage, updatedMessage.Id)});
     }
@@ -72,11 +57,7 @@ public class MessageController : ControllerBase
     {
         await _messageService.DeleteMessageAsync(chatId, messageId, CurrentUserId);
 
-        await _hubContext.Clients.Group(chatId.ToString()).SendAsync(SignalRMethods.MessageDeleted, new
-        {
-            ChatId = chatId,
-            MessageId = messageId
-        });
+        await _chatNotificationService.NotifyMessageDeletedAsync(chatId, messageId);
 
         return Ok(new { message = string.Format(InfoMessages.DeletedMessage) });
     }

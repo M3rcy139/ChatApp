@@ -1,4 +1,4 @@
-namespace ChatApp.API.Contracts;
+namespace ChatApp.Business.Contracts;
 
 public static class SignalRMethods
 {

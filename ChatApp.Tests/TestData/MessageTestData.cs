@@ -5,6 +5,7 @@ namespace ChatApp.Tests.TestData;
 public static class MessageTestData
 {
     public const string MessageText = "Message";
+    public const string EditedMessageText = "EditedMessage";
     public const string SearchMessage = "test message";
     public const string UpdatedMessageText = "Updated message";
     public const string SearchQuery = "test";
@@ -16,6 +17,15 @@ public static class MessageTestData
         ChatId = chatId ?? Guid.NewGuid(),
         SenderId = Guid.NewGuid(),
         Text = text
+    };
+
+    public static Message CreateEditedMessage(string text = EditedMessageText, Guid? chatId = null) => new Message
+    {
+        Id = Guid.NewGuid(),
+        ChatId = chatId ?? Guid.NewGuid(),
+        SenderId = Guid.NewGuid(),
+        Text = text,
+        EditedAt = DateTime.UtcNow,
     };
 
     public static List<Message> CreateCahedMessages(int count)

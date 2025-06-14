@@ -7,10 +7,17 @@ namespace ChatApp.Tests.Mocks;
 
 public static class ChatControllerMocks
 {
-    public static void SetupCreateChat(Mock<IChatService> chatServiceMock, Guid userId, Guid chatId, CreateChatRequest request)
+    public static void SetupCreateChat(Mock<IChatService> chatServiceMock, Guid userId, Chat chat, 
+        CreateChatRequest request)
     {
         chatServiceMock.Setup(cs => cs.CreateChatAsync(userId, request.Name, request.ParticipantUserIds))
-            .ReturnsAsync(new Chat { Id = chatId, Name = request.Name });
+            .ReturnsAsync(chat);
+    }
+
+    public static void  SetupCreateChatThrows(Mock<IChatService> chatServiceMock, Exception exception)
+    {
+        chatServiceMock.Setup(cs => cs.CreateChatAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<List<Guid>>()))
+            .ThrowsAsync(exception);
     }
     
     public static void SetupGetChat(Mock<IChatService> chatServiceMock, Guid userId, List<Chat> chats)
