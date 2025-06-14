@@ -10,6 +10,7 @@ using Xunit;
 
 namespace ChatApp.Tests.Tests.Controllers;
     
+[Collection("ControllerTests")]
 public class UserControllerTests : IClassFixture<UserControllerWebApplicationFactory>
 {
     private readonly HttpClient _client;

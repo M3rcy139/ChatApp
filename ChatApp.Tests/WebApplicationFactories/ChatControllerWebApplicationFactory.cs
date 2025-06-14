@@ -1,4 +1,6 @@
 using ChatApp.Business.Interfaces.Services;
+using ChatApp.Tests.Fakes.Providers;
+using ChatApp.Tests.Fakes.Handlers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -10,11 +12,6 @@ public class ChatControllerWebApplicationFactory : BaseWebApplicationFactory<Pro
     public Guid CurrentUserId { get; } = Guid.NewGuid();
     public Mock<IChatService> ChatServiceMock { get; } = new();
 
-    public ChatControllerWebApplicationFactory()
-    {
-        TestAuthHandler.CurrentUserId = CurrentUserId;
-    }
-
     protected override void ConfigureMocks(IServiceCollection services)
     {
         var chatServiceDescriptor = services.SingleOrDefault(
@@ -22,6 +19,8 @@ public class ChatControllerWebApplicationFactory : BaseWebApplicationFactory<Pro
         if (chatServiceDescriptor != null)
             services.Remove(chatServiceDescriptor);
 
+        services.AddSingleton(new CurrentUserProvider(CurrentUserId));
+        
         services.AddSingleton(ChatServiceMock.Object);
 
         services.AddAuthentication(options =>
